@@ -21,7 +21,7 @@ jobs:
       - name: Create Release
         uses: ncipollo/release-action@v1
         with:
-          tag: ${{ github.sha }}
-          name: ${{ github.sha }}
+          tag: ${{ github.sha_short }}
+          name: ${{ github.sha_short }}
           artifacts: result/*.iso
           makeLatest: true

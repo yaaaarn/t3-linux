@@ -230,6 +230,8 @@ in
 
   services.flatpak.enable = true;
 
+  isoImage.squashfsCompression = "gzip -Xcompression-level 1";
+
   # qemu vm tweaks
   virtualisation.vmVariant = {
     virtualisation.cores = 4;
