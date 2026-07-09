@@ -2,8 +2,12 @@
   description = "tung tung tung linux";
 
   inputs = {
+    nixpkgs-lib.url = "github:nix-community/nixpkgs.lib";
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-    flake-parts.url = "github:hercules-ci/flake-parts";
+    flake-parts = {
+      url = "github:hercules-ci/flake-parts";
+      inputs.nixpkgs-lib.follows = "nixpkgs-lib";
+    };
     systems.url = "github:nix-systems/default";
 
     home-manager = {
@@ -14,7 +18,9 @@
     mangowc = {
       url = "github:DreamMaoMao/mangowc";
       inputs.nixpkgs.follows = "nixpkgs";
+      inputs.flake-parts.follows = "flake-parts";
     };
+
   };
 
   outputs =
@@ -24,9 +30,16 @@
       {
         systems = import inputs.systems;
 
-        perSystem = { config, pkgs, system, ... }: {
-          packages.default = self.nixosConfigurations.default.config.system.build.isoImage;
-        };
+        perSystem =
+          {
+            config,
+            pkgs,
+            system,
+            ...
+          }:
+          {
+            packages.default = self.nixosConfigurations.default.config.system.build.isoImage;
+          };
 
         flake.nixosConfigurations.default = inputs.nixpkgs.lib.nixosSystem {
           system = "x86_64-linux";

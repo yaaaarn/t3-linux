@@ -88,7 +88,7 @@ in
   home-manager.useGlobalPkgs = true;
   home-manager.useUserPackages = true;
   home-manager.users.${username} =
-    { pkgs, ... }:
+    { config, pkgs, ... }:
     {
       #
       # meta
@@ -99,6 +99,12 @@ in
       imports = [
         inputs.mangowc.hmModules.mango
       ];
+
+      #
+      # general
+      #
+
+      xdg.userDirs.createDirectories = true;
 
       #
       # goodies
@@ -114,6 +120,8 @@ in
         shared-mime-info
 
         epiphany
+
+        nwg-look
       ];
 
       #
@@ -145,6 +153,37 @@ in
       };
 
       #
+      # theming
+      #
+
+      gtk = {
+        enable = true;
+
+        gtk3 = {
+          enable = true;
+          theme = {
+            name = "Colloid-Orange-Dark-Gruvbox";
+            package = pkgs.colloid-gtk-theme.override {
+              tweaks = [ "gruvbox" ];
+              colorVariants = [ "dark" ];
+              themeVariants = [ "orange" ];
+              sizeVariants = [ "standard" ];
+            };
+          };
+          iconTheme = {
+            name = "candy-icons";
+            package = pkgs.candy-icons;
+          };
+        };
+
+        gtk4 = {
+          enable = true;
+          theme = config.gtk.gtk3.theme;
+          iconTheme = config.gtk.gtk3.iconTheme;
+        };
+      };
+
+      #
       # program suite
       #
 
@@ -155,7 +194,7 @@ in
       };
 
       #
-      # desktop entries 
+      # desktop entries
       #
 
       xdg.desktopEntries = {
@@ -177,7 +216,7 @@ in
           icon = "applications-games";
           terminal = false;
           categories = [
-            "Game" 
+            "Game"
           ];
         };
       };
