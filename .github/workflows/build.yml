@@ -2,7 +2,7 @@ name: Build
 
 on:
   push:
-    branches: [main]
+    tags: ['v*']
 
 permissions:
   contents: write
@@ -21,7 +21,7 @@ jobs:
       - name: Create Release
         uses: ncipollo/release-action@v1
         with:
-          tag: ${{ github.sha_short }}
-          name: ${{ github.sha_short }}
+          tag: ${{ github.ref_name }}
+          name: Release ${{ github.ref_name }}
           artifacts: result/*.iso
           makeLatest: true
