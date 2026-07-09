@@ -3,6 +3,7 @@ name: Build
 on:
   push:
     tags: ['v*']
+    branches: ['main']
 
 permissions:
   contents: write
@@ -18,7 +19,15 @@ jobs:
       - name: Build ISO
         run: nix build .#packages.x86_64-linux.default
 
+      - name: Upload ISO Artifact
+        if: github.ref_type == 'branch'
+        uses: actions/upload-artifact@v4
+        with:
+          name: t3-linux-iso
+          path: result/*.iso
+
       - name: Create Release
+        if: github.ref_type == 'tag'
         uses: ncipollo/release-action@v1
         with:
           tag: ${{ github.ref_name }}
