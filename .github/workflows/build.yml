@@ -24,7 +24,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: t3-linux-iso
-          path: result/*.iso
+          path: result/iso/*.iso
 
       - name: Create Release
         if: github.ref_type == 'tag'
@@ -32,5 +32,5 @@ jobs:
         with:
           tag: ${{ github.ref_name }}
           name: Release ${{ github.ref_name }}
-          artifacts: result/*.iso
+          artifacts: result/iso/*.iso
           makeLatest: true
