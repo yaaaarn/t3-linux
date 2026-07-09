@@ -1,0 +1,29 @@
+name: Build
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: DeterminateSystems/nix-installer-action@v16
+
+      - uses: DeterminateSystems/magic-nix-cache-action@v8
+
+      - name: Build ISO
+        run: nix build .#packages.x86_64-linux.default
+
+      - name: Create Release
+        uses: ncipollo/release-action@v1
+        with:
+          tag: ${{ github.sha }}
+          name: ${{ github.sha }}
+          artifacts: result/*.iso
+          makeLatest: true
