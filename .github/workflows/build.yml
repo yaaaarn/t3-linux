@@ -13,9 +13,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: DeterminateSystems/nix-installer-action@v16
-
-      - uses: DeterminateSystems/magic-nix-cache-action@v8
+      - uses: cachix/install-nix-action@v25
 
       - name: Build ISO
         run: nix build .#packages.x86_64-linux.default
